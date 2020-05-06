@@ -4,7 +4,7 @@
 	"description": "Logos Syntax and Formatting support for VS Code",
 	"version": "0.2.2",
 	"publisher": "Renaitare",
-	"icon": "logos-vscode.png",
+	"icon": "assets/logos-vscode.png",
 	"author": {
 		"name": "Renaitare",
 		"email": "support@renai.me"
