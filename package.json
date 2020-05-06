@@ -1,0 +1,60 @@
+{
+	"name": "logos-vscode",
+	"version": "0.1.2",
+	"description": "Logos Preprocessor support for VS Code",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Renaitare/logos-vscode.git"
+	},
+	"keywords": [
+		"logos",
+		"vscode"
+	],
+	"author": {
+		"name": "Renaitare",
+		"email": "support@renai.me"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Renaitare/logos-vscode/issues"
+	},
+	"homepage": "https://github.com/Renaitare/logos-vscode#readme",
+	"displayName": "Logos",
+	"publisher": "Renaitare",
+	"icon": "logo.png",
+	"galleryBanner": {
+		"color": "#1F1E1E",
+		"theme": "dark"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"engines": {
+		"vscode": "^1.30.0"
+	},
+	"contributes": {
+		"languages": [
+			{
+				"id": "logos",
+				"aliases": [
+					"Logos",
+					"logos"
+				],
+				"extensions": [
+					".xm",
+					".x",
+					".xi",
+					".xmi"
+				],
+				"configuration": "./language-configuration.json"
+			}	
+		],
+		"grammars": [
+			{
+				"language": "logos",
+				"scopeName": "source.logos",
+				"path": "./syntaxes/logos.tmLanguage.json"
+			}
+		]
+	}
+}
