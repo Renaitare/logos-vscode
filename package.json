@@ -1,38 +1,84 @@
 {
 	"name": "logos-vscode",
-	"version": "0.1.2",
-	"description": "Logos Preprocessor support for VS Code",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Renaitare/logos-vscode.git"
-	},
-	"keywords": [
-		"logos",
-		"vscode"
-	],
+	"displayName": "Logos",
+	"description": "Logos Syntax and Formatting support for VS Code",
+	"version": "0.2.2",
+	"publisher": "Renaitare",
+	"icon": "logos-vscode.png",
 	"author": {
 		"name": "Renaitare",
 		"email": "support@renai.me"
 	},
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/Renaitare/logos-vscode/issues"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Renaitare/logos-vscode"
 	},
-	"homepage": "https://github.com/Renaitare/logos-vscode#readme",
-	"displayName": "Logos",
-	"publisher": "Renaitare",
-	"icon": "logo.png",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.15.0"
+	},
 	"galleryBanner": {
-		"color": "#1F1E1E",
+		"color": "#005577",
 		"theme": "dark"
 	},
 	"categories": [
+		"Formatters",
 		"Programming Languages"
 	],
-	"engines": {
-		"vscode": "^1.30.0"
-	},
+	"keywords": [
+		"objective-c",
+		"objective-c++",
+		"logos",
+		"vscode"
+	],
+	"main": "./out/src/extension",
+	"activationEvents": [
+		"onLanguage:objective-c",
+		"onLanguage:objective-cpp",
+		"onLanguage:logos"
+	],
 	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Logos",
+			"properties": {
+				"logos-vscode.executable": {
+					"type": "string",
+					"default": "clang-format",
+					"description": "Path to 'clang-format' Executable"
+				},
+				"logos-vscode.style": {
+					"type": "string",
+					"default": "file",
+					"description": "'clang-format' Style (Can be 'file', 'LLVM', 'Google', 'Chromium', 'Mozilla', or 'Webkit')"
+				},
+				"logos-vscode.fallbackStyle": {
+					"type": "string",
+					"default": "LLVM",
+					"description": "Fallback 'clang-format' style if primary style is unavailable (Can be 'file', 'LLVM', 'Google', 'Chromium', 'Mozilla', or 'Webkit')"
+				},
+				"logos-vscode.language.objective-c.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable Formatting for Objective-C (Requires Restart)"
+				},
+				"logos-vscode.language.objective-cpp.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable Formatting for Objective-C++ (Requires Restart)"
+				},
+				"logos-vscode.language.logos.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable Formatting for Logos (Requires Restart)"
+				},
+				"logos-vscode.assumeFilename": {
+					"type": "string",
+					"default": "",
+					"description": "When reading from stdin, logos-vscode assumes this filename to look for a style config file (with -style=file) and to determine the language."
+				}
+			}
+		},
 		"languages": [
 			{
 				"id": "logos",
@@ -47,7 +93,7 @@
 					".xmi"
 				],
 				"configuration": "./language-configuration.json"
-			}	
+			}
 		],
 		"grammars": [
 			{
@@ -56,5 +102,20 @@
 				"path": "./syntaxes/logos.tmLanguage.json"
 			}
 		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"dependencies": {
+		"sax": "^1.2.4"
+	},
+	"devDependencies": {
+		"@types/node": "^13.7.0",
+		"@types/sax": "^1.2.1",
+		"@types/vscode": "1.14.0",
+		"tslint": "^6.1.2",
+		"typescript": "^3.8.3"
 	}
 }
