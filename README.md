@@ -1,4 +1,6 @@
 # Logos for VS Code
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/Renaitare.logos-vscode?style=for-the-badge) ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/Renaitare.logos-vscode?style=for-the-badge) ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Renaitare.logos-vscode?style=for-the-badge)
+
 Provides syntax highlighting and formatting support for Logos files
 
 <img src="assets/preview.png" alt="Logos Preview" width="400"/>
