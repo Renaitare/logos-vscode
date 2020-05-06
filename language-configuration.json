@@ -1,0 +1,81 @@
+{
+	"autoClosingPairs": [
+		[
+			"{",
+			"}"
+		],
+		[
+			"[",
+			"]"
+		],
+		[
+			"(",
+			")"
+		],
+		[
+			"\"",
+			"\""
+		],
+		[
+			"'",
+			"'"
+		],
+		[
+			"%(hook|group|subclass)",
+			"%end"
+		]
+	],
+	"brackets": [
+		[
+			"{",
+			"}"
+		],
+		[
+			"[",
+			"]"
+		],
+		[
+			"(",
+			")"
+		]
+	],
+	"comments": {
+		"lineComment": "//",
+		"blockComment": [
+			"/*",
+			"*/"
+		]
+	},
+	"folding": {
+		"markers": {
+			"start": "%(hook|group|subclass)",
+			"end": "%end"
+		}
+	},
+	"surroundingPairs": [
+		[
+			"{",
+			"}"
+		],
+		[
+			"[",
+			"]"
+		],
+		[
+			"(",
+			")"
+		],
+		[
+			"\"",
+			"\""
+		],
+		[
+			"'",
+			"'"
+		],
+		[
+			"%(hook|group|subclass)",
+			"%end"
+		]
+	],
+}
