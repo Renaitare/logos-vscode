@@ -3,6 +3,8 @@
 
 Provides syntax highlighting and formatting support for Logos files
 
+Get it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Renaitare.logos-vscode)
+
 <img src="assets/preview.png" alt="Logos Preview" width="400"/>
 
 ## Features
