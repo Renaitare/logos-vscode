@@ -2,7 +2,7 @@
 	"name": "logos-vscode",
 	"displayName": "Logos",
 	"description": "Logos Syntax and Formatting support for VS Code",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"publisher": "Renaitare",
 	"icon": "assets/logos-vscode.png",
 	"author": {
@@ -56,21 +56,6 @@
 					"type": "string",
 					"default": "LLVM",
 					"description": "Fallback 'clang-format' style if primary style is unavailable (Can be 'file', 'LLVM', 'Google', 'Chromium', 'Mozilla', or 'Webkit')"
-				},
-				"logos-vscode.language.objective-c.enable": {
-					"type": "boolean",
-					"default": true,
-					"description": "Enable Formatting for Objective-C (Requires Restart)"
-				},
-				"logos-vscode.language.objective-cpp.enable": {
-					"type": "boolean",
-					"default": true,
-					"description": "Enable Formatting for Objective-C++ (Requires Restart)"
-				},
-				"logos-vscode.language.logos.enable": {
-					"type": "boolean",
-					"default": true,
-					"description": "Enable Formatting for Logos (Requires Restart)"
 				},
 				"logos-vscode.assumeFilename": {
 					"type": "string",
