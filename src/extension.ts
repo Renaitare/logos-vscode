@@ -3,71 +3,100 @@ import path = require('path');
 import sax = require('sax');
 import * as vscode from 'vscode';
 
-import { getBinPath } from './clangpath';
+import { getBinaryPath } from './clangpath';
 import { MODES } from './languages';
-
 
 export let outputChannel = vscode.window.createOutputChannel('logos-vscode');
 
 function getPlatformString() {
 	switch (process.platform) {
-		case 'win32': return 'windows';
-		case 'linux': return 'linux';
-		case 'darwin': return 'osx';
+		case 'win32':
+			return 'windows';
+		case 'linux':
+			return 'linux';
+		case 'darwin':
+			return 'osx';
 	}
 
 	return 'unknown';
 }
 
-export class ClangDocumentFormattingEditProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
-	private defaultConfigure = {
-		executable: 'logos-vscode',
+export class ClangDocumentFormattingEditProvider
+	implements
+		vscode.DocumentFormattingEditProvider,
+		vscode.DocumentRangeFormattingEditProvider {
+	private defaults = {
+		executable: 'clang-format',
 		style: 'file',
-		fallbackStyle: 'none',
-		assumeFilename: ''
+		fallbackStyle: 'LLVM',
+		assumeFilename: '',
 	};
 
-	public provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): Thenable<vscode.TextEdit[]> {
-		return this.doFormatDocument(document, null, options, token);
+	public provideDocumentFormattingEdits(
+		document: vscode.TextDocument,
+		options: vscode.FormattingOptions,
+		token: vscode.CancellationToken
+	): Thenable<vscode.TextEdit[]> {
+		return this.doFormatDocument(document, null, token);
 	}
 
-	public provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): Thenable<vscode.TextEdit[]> {
-		return this.doFormatDocument(document, range, options, token);
+	public provideDocumentRangeFormattingEdits(
+		document: vscode.TextDocument,
+		range: vscode.Range,
+		options: vscode.FormattingOptions,
+		token: vscode.CancellationToken
+	): Thenable<vscode.TextEdit[]> {
+		return this.doFormatDocument(document, range, token);
 	}
 
-	private getEdits(document: vscode.TextDocument, xml: string, codeContent: string): Thenable<vscode.TextEdit[]> {
+	private getEdits(
+		document: vscode.TextDocument,
+		xml: string,
+		codeContent: string
+	): Thenable<vscode.TextEdit[]> {
 		return new Promise((resolve, reject) => {
 			let options = {
 				trim: false,
 				normalize: false,
-				loose: true
+				loose: true,
 			};
 			let parser = sax.parser(true, options);
 
 			let edits: vscode.TextEdit[] = [];
-			let currentEdit: { length: number, offset: number, text: string };
+			let currentEdit: { length: number; offset: number; text: string };
 
 			let codeBuffer = new Buffer(codeContent);
 			// encoding position cache
 			let codeByteOffsetCache = {
 				byte: 0,
-				offset: 0
+				offset: 0,
 			};
-			let byteToOffset = function (editInfo: { length: number, offset: number }) {
+			let byteToOffset = function (editInfo: {
+				length: number;
+				offset: number;
+			}) {
 				let offset = editInfo.offset;
 				let length = editInfo.length;
 
 				if (offset >= codeByteOffsetCache.byte) {
-					editInfo.offset = codeByteOffsetCache.offset + codeBuffer.slice(codeByteOffsetCache.byte, offset).toString('utf8').length;
+					editInfo.offset =
+						codeByteOffsetCache.offset +
+						codeBuffer
+							.slice(codeByteOffsetCache.byte, offset)
+							.toString('utf8').length;
 					codeByteOffsetCache.byte = offset;
 					codeByteOffsetCache.offset = editInfo.offset;
 				} else {
-					editInfo.offset = codeBuffer.slice(0, offset).toString('utf8').length;
+					editInfo.offset = codeBuffer
+						.slice(0, offset)
+						.toString('utf8').length;
 					codeByteOffsetCache.byte = offset;
 					codeByteOffsetCache.offset = editInfo.offset;
 				}
 
-				editInfo.length = codeBuffer.slice(offset, offset + length).toString('utf8').length;
+				editInfo.length = codeBuffer
+					.slice(offset, offset + length)
+					.toString('utf8').length;
 
 				return editInfo;
 			};
@@ -87,9 +116,13 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 
 					case 'replacement':
 						currentEdit = {
-							length: parseInt(tag.attributes['length'].toString()),
-							offset: parseInt(tag.attributes['offset'].toString()),
-							text: ''
+							length: parseInt(
+								tag.attributes['length'].toString()
+							),
+							offset: parseInt(
+								tag.attributes['offset'].toString()
+							),
+							text: '',
 						};
 						byteToOffset(currentEdit);
 						break;
@@ -100,16 +133,22 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 			};
 
 			parser.ontext = (text) => {
-				if (!currentEdit) { return; }
+				if (!currentEdit) {
+					return;
+				}
 
 				currentEdit.text = text;
 			};
 
-			parser.onclosetag = (tagName) => {
-				if (!currentEdit) { return; }
+			parser.onclosetag = () => {
+				if (!currentEdit) {
+					return;
+				}
 
 				let start = document.positionAt(currentEdit.offset);
-				let end = document.positionAt(currentEdit.offset + currentEdit.length);
+				let end = document.positionAt(
+					currentEdit.offset + currentEdit.length
+				);
 
 				let editRange = new vscode.Range(start, end);
 
@@ -137,7 +176,7 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 		let execPath = platformExecPath || defaultExecPath;
 
 		if (!execPath) {
-			return this.defaultConfigure.executable;
+			return this.defaults.executable;
 		}
 
 		// replace placeholders, if present
@@ -150,30 +189,32 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 			});
 	}
 
-	private getLanguage(document: vscode.TextDocument): string {
-		return document.languageId;
-	}
-
-	private getStyle(document: vscode.TextDocument) {
-		let ret = vscode.workspace.getConfiguration('logos-vscode').get<string>('style');
+	private getStyle() {
+		let ret = vscode.workspace
+			.getConfiguration('logos-vscode')
+			.get<string>('style');
 		if (ret && ret.trim()) {
 			return ret.trim();
 		} else {
-			return this.defaultConfigure.style;
+			return this.defaults.style;
 		}
 	}
 
-	private getFallbackStyle(document: vscode.TextDocument) {
-		let strConf = vscode.workspace.getConfiguration('logos-vscode').get<string>('fallbackStyle');
+	private getFallbackStyle() {
+		let strConf = vscode.workspace
+			.getConfiguration('logos-vscode')
+			.get<string>('fallbackStyle');
 		if (strConf && strConf.trim()) {
 			return strConf;
 		}
 
-		return this.defaultConfigure.style;
+		return this.defaults.style;
 	}
 
 	private getAssumedFilename(document: vscode.TextDocument) {
-		let assumedFilename = vscode.workspace.getConfiguration('logos-vscode').get<string>('assumeFilename');
+		let assumedFilename = vscode.workspace
+			.getConfiguration('logos-vscode')
+			.get<string>('assumeFilename');
 		if (assumedFilename === '') {
 			return document.fileName;
 		}
@@ -190,37 +231,47 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 	private getWorkspaceFolder(): string | undefined {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
-			vscode.window.showErrorMessage('Unable to get the location of logos-vscode executable - no active workspace selected');
+			vscode.window.showErrorMessage(
+				'Unable to get the location of logos-vscode executable - no active workspace selected'
+			);
 			return undefined;
 		}
 
 		if (!vscode.workspace.workspaceFolders) {
-			vscode.window.showErrorMessage('Unable to get the location of logos-vscode executable - no workspaces available');
+			vscode.window.showErrorMessage(
+				'Unable to get the location of logos-vscode executable - no workspaces available'
+			);
 			return undefined;
 		}
 
 		const currentDocumentUri = editor.document.uri;
-		let workspacePath = vscode.workspace.getWorkspaceFolder(currentDocumentUri);
+		let workspacePath = vscode.workspace.getWorkspaceFolder(
+			currentDocumentUri
+		);
 		if (!workspacePath) {
 			const fallbackWorkspace = vscode.workspace.workspaceFolders[0];
-			vscode.window.showWarningMessage(`Unable to deduce the location of logos-vscode executable for file outside the workspace - expanding \${workspaceFolder} to '${fallbackWorkspace.name}' path`);
+			vscode.window.showWarningMessage(
+				`Unable to deduce the location of logos-vscode executable for file outside the workspace - expanding \${workspaceFolder} to '${fallbackWorkspace.name}' path`
+			);
 			workspacePath = fallbackWorkspace;
 		}
 		return workspacePath.uri.path;
 	}
 
-	private doFormatDocument(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): Thenable<vscode.TextEdit[]> {
+	private doFormatDocument(
+		document: vscode.TextDocument,
+		range?: vscode.Range,
+		token?: vscode.CancellationToken
+	): Thenable<vscode.TextEdit[]> {
 		return new Promise((resolve, reject) => {
-			let filename = document.fileName;
-
-			let formatCommandBinPath = getBinPath(this.getExecutablePath());
+			let formatCommandBinPath = getBinaryPath(this.getExecutablePath());
 			let codeContent = document.getText();
 
 			let formatArgs = [
 				'-output-replacements-xml',
-				`-style=${this.getStyle(document)}`,
-				`-fallback-style=${this.getFallbackStyle(document)}`,
-				`-assume-filename=${this.getAssumedFilename(document)}`
+				`-style=${this.getStyle()}`,
+				`-fallback-style=${this.getFallbackStyle()}`,
+				`-assume-filename=${this.getAssumedFilename(document)}`,
 			];
 
 			if (range) {
@@ -228,9 +279,15 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 				let length = document.offsetAt(range.end) - offset;
 
 				// fix charater length to byte length
-				length = Buffer.byteLength(codeContent.substr(offset, length), 'utf8');
+				length = Buffer.byteLength(
+					codeContent.substr(offset, length),
+					'utf8'
+				);
 				// fix charater offset to byte offset
-				offset = Buffer.byteLength(codeContent.substr(0, offset), 'utf8');
+				offset = Buffer.byteLength(
+					codeContent.substr(0, offset),
+					'utf8'
+				);
 
 				formatArgs.push(`-offset=${offset}`, `-length=${length}`);
 			}
@@ -242,13 +299,19 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 
 			let stdout = '';
 			let stderr = '';
-			let child = cp.spawn(formatCommandBinPath, formatArgs, { cwd: workingPath });
+			let child = cp.spawn(formatCommandBinPath, formatArgs, {
+				cwd: workingPath,
+			});
 			child.stdin.end(codeContent);
-			child.stdout.on('data', (chunk) => stdout += chunk);
-			child.stderr.on('data', (chunk) => stderr += chunk);
+			child.stdout.on('data', (chunk) => (stdout += chunk));
+			child.stderr.on('data', (chunk) => (stderr += chunk));
 			child.on('error', (err) => {
 				if (err && (<any>err).code === 'ENOENT') {
-					vscode.window.showInformationMessage('The \'' + formatCommandBinPath + '\' command is not available.  Please check your logos-vscode.executable user setting and ensure it is installed.');
+					vscode.window.showInformationMessage(
+						"The '" +
+							formatCommandBinPath +
+							"' command is not available.  Please check your logos-vscode.executable user setting and ensure it is installed."
+					);
 					return resolve(null);
 				}
 				return reject(err);
@@ -266,7 +329,9 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 						return reject();
 					}
 
-					return resolve(this.getEdits(document, stdout, codeContent));
+					return resolve(
+						this.getEdits(document, stdout, codeContent)
+					);
 				} catch (e) {
 					reject(e);
 				}
@@ -281,21 +346,30 @@ export class ClangDocumentFormattingEditProvider implements vscode.DocumentForma
 		});
 	}
 
-	public formatDocument(document: vscode.TextDocument): Thenable<vscode.TextEdit[]> {
-		return this.doFormatDocument(document, null, null, null);
+	public formatDocument(
+		document: vscode.TextDocument
+	): Thenable<vscode.TextEdit[]> {
+		return this.doFormatDocument(document);
 	}
 }
 
-let diagnosticCollection: vscode.DiagnosticCollection;
-
 export function activate(ctx: vscode.ExtensionContext): void {
-
 	let formatter = new ClangDocumentFormattingEditProvider();
 	let availableLanguages = {};
 
 	MODES.forEach((mode) => {
-		ctx.subscriptions.push(vscode.languages.registerDocumentRangeFormattingEditProvider(mode, formatter));
-		ctx.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(mode, formatter));
+		ctx.subscriptions.push(
+			vscode.languages.registerDocumentRangeFormattingEditProvider(
+				mode,
+				formatter
+			)
+		);
+		ctx.subscriptions.push(
+			vscode.languages.registerDocumentFormattingEditProvider(
+				mode,
+				formatter
+			)
+		);
 		availableLanguages[mode.language] = true;
 	});
 }

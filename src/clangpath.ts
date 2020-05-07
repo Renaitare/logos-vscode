@@ -4,17 +4,17 @@ import fs = require('fs');
 import path = require('path');
 
 let binPathCache: {
-	[bin: string]: string
+	[bin: string]: string;
 } = {};
 
-export function getBinPath(binname: string) {
-	if (binPathCache[binname]) {
-		return binPathCache[binname];
+export function getBinaryPath(binary: string) {
+	if (binPathCache[binary]) {
+		return binPathCache[binary];
 	}
 
-	for (let binNameToSearch of correctBinname(binname)) {
+	for (let binNameToSearch of correctBinaryName(binary)) {
 		if (fs.existsSync(binNameToSearch)) {
-			binPathCache[binname] = binNameToSearch;
+			binPathCache[binary] = binNameToSearch;
 			return binNameToSearch;
 		}
 
@@ -24,18 +24,18 @@ export function getBinPath(binname: string) {
 				let binpath = path.join(pathparts[i], binNameToSearch);
 
 				if (fs.existsSync(binpath)) {
-					binPathCache[binname] = binpath;
+					binPathCache[binary] = binpath;
 					return binpath;
 				}
 			}
 		}
 	}
 
-	binPathCache[binname] = binname;
-	return binname;
+	binPathCache[binary] = binary;
+	return binary;
 }
 
-function correctBinname(binname: string): string[] {
+function correctBinaryName(binname: string): string[] {
 	if (process.platform === 'win32') {
 		return [binname + '.exe', binname + '.bat', binname + '.cmd', binname];
 	} else {
