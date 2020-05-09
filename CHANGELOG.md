@@ -3,6 +3,15 @@
 Changes for each minor version will be documented here.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## **[0.2.4]** - 2020-05-08
+
+### Changed
+
+-   Updated `package.json` with the removal of the `tslint` dependency as it is now deprecated
+-   Switched to using **PNPM** over **Yarn** and added the according lock-files to the `.gitignore` file
+
+-   Completely rewrote the Logos Syntax highlighting to actually work and not break. (Special thanks to [Kritanta](https://github.com/KritantaDev))
+
 ## **[0.2.3]** - 2020-05-07
 
 ### Changed

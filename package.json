@@ -2,7 +2,7 @@
 	"name": "logos-vscode",
 	"displayName": "Logos",
 	"description": "Logos Syntax and Formatting support for VS Code",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"publisher": "Renaitare",
 	"icon": "assets/logos-vscode.png",
 	"author": {
@@ -100,7 +100,6 @@
 		"@types/node": "^13.7.0",
 		"@types/sax": "^1.2.1",
 		"@types/vscode": "1.14.0",
-		"tslint": "^6.1.2",
 		"typescript": "^3.8.3"
 	}
 }

@@ -1,71 +1,25 @@
 {
+	"fileTypes": ["xm", "x", "xi", "xmi"],
 	"name": "Logos",
-	"scopeName": "source.logos",
 	"patterns": [
 		{
-			"name": "keyword.logos",
-			"match": "%(init|hook|subclass|group|class|new|ctor|dtor|end|config|orig|log)"
+			"match": "%(init|hook|subclass|group|class|new|ctor|dtor|end|config|orig|log)",
+			"name": "keyword.source.logos"
 		},
 		{
-			"include": "#block_innards"
+			"captures": {
+				"1": {
+					"name": "keyword.source.logos"
+				}
+			},
+			"match": "%c\\(([A-Za-z$_]+)\\)"
 		},
 		{
 			"include": "source.objc"
 		},
 		{
-			"include": "source.cpp"
+			"include": "source.c++"
 		}
 	],
-	"repository": {
-		"block_innards": {
-			"patterns": [
-				{
-					"include": "#properties"
-				}
-			]
-		},
-		"properties": {
-			"patterns": [
-				{
-					"begin": "((%)property)\\s*(\\()",
-					"beginCaptures": {
-						"1": {
-							"name": "keyword.other.property.logos"
-						},
-						"2": {
-							"name": "punctuation.definition.keyword.logos"
-						},
-						"3": {
-							"name": "punctuation.section.scope.begin.logos"
-						}
-					},
-					"end": "(\\))",
-					"endCaptures": {
-						"1": {
-							"name": "punctuation.section.scope.end.logos"
-						}
-					},
-					"name": "meta.property-with-attributes.logos",
-					"patterns": [
-						{
-							"match": "\\b(getter|setter|readonly|readwrite|assign|retain|copy|nonatomic|strong|weak)\\b",
-							"name": "keyword.other.property.attribute"
-						}
-					]
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "keyword.other.property.logos"
-						},
-						"2": {
-							"name": "punctuation.definition.keyword.logos"
-						}
-					},
-					"match": "((%)property)\\b",
-					"name": "meta.property.logos"
-				}
-			]
-		}
-	}
+	"scopeName": "source.logos"
 }

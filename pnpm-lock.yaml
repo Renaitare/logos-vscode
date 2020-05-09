@@ -1,0 +1,40 @@
+dependencies:
+  sax: 1.2.4
+devDependencies:
+  '@types/node': 13.13.5
+  '@types/sax': 1.2.1
+  '@types/vscode': 1.14.0
+  typescript: 3.8.3
+lockfileVersion: 5.1
+packages:
+  /@types/node/13.13.5:
+    dev: true
+    resolution:
+      integrity: sha512-3ySmiBYJPqgjiHA7oEaIo2Rzz0HrOZ7yrNO5HWyaE5q0lQ3BppDZ3N53Miz8bw2I7gh1/zir2MGVZBvpb1zq9g==
+  /@types/sax/1.2.1:
+    dependencies:
+      '@types/node': 13.13.5
+    dev: true
+    resolution:
+      integrity: sha512-dqYdvN7Sbw8QT/0Ci5rhjE4/iCMJEM0Y9rHpCu+gGXD9Lwbz28t6HI2yegsB6BoV1sShRMU6lAmAcgRjmFy7LA==
+  /@types/vscode/1.14.0:
+    dev: true
+    resolution:
+      integrity: sha512-0PFarl1nOck6V+vTMycb7b3mrc2ybDkkg3bA8u/8DUyY0/KhYUw3qxCQjxT2c66ferlpOeA05ETgddSmup69fA==
+  /sax/1.2.4:
+    dev: false
+    resolution:
+      integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
+  /typescript/3.8.3:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
+specifiers:
+  '@types/node': ^13.7.0
+  '@types/sax': ^1.2.1
+  '@types/vscode': 1.14.0
+  sax: ^1.2.4
+  typescript: ^3.8.3

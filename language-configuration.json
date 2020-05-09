@@ -1,81 +1,36 @@
 {
-	"autoClosingPairs": [
-		[
-			"{",
-			"}"
-		],
-		[
-			"[",
-			"]"
-		],
-		[
-			"(",
-			")"
-		],
-		[
-			"\"",
-			"\""
-		],
-		[
-			"'",
-			"'"
-		],
-		[
-			"%(hook|group|subclass)",
-			"%end"
-		]
-	],
-	"brackets": [
-		[
-			"{",
-			"}"
-		],
-		[
-			"[",
-			"]"
-		],
-		[
-			"(",
-			")"
-		]
-	],
 	"comments": {
 		"lineComment": "//",
-		"blockComment": [
-			"/*",
-			"*/"
-		]
+		"blockComment": ["/*", "*/"]
 	},
+	"brackets": [
+		["%hook", "%end"],
+		["%group", "%end"],
+		["{", "}"],
+		["[", "]"],
+		["(", ")"]
+	],
+	"autoClosingPairs": [
+		["{", "}"],
+		["[", "]"],
+		["%group", "%end"],
+		["(", ")"],
+		["\"", "\""],
+		["'", "'"]
+	],
+	"surroundingPairs": [
+		["%hook", "%end"],
+		["%group", "%end"],
+		["{", "}"],
+		["[", "]"],
+		["(", ")"],
+		["\"", "\""],
+		["'", "'"]
+	],
 	"folding": {
 		"markers": {
-			"start": "%(hook|group|subclass)",
+			"start": "%hook|%group*(.*)",
 			"end": "%end"
 		}
-	},
-	"surroundingPairs": [
-		[
-			"{",
-			"}"
-		],
-		[
-			"[",
-			"]"
-		],
-		[
-			"(",
-			")"
-		],
-		[
-			"\"",
-			"\""
-		],
-		[
-			"'",
-			"'"
-		],
-		[
-			"%(hook|group|subclass)",
-			"%end"
-		]
-	],
+	}
 }
