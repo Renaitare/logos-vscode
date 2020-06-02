@@ -21,12 +21,25 @@ function getPlatformString() {
 	return 'unknown';
 }
 
+function getClangBinaryPath() {
+	switch (process.platform) {
+		case 'win32':
+			return '../node_modules/clang-format/bin/win32/clang-format.exe';
+		case 'linux':
+			return '../node_modules/clang-format/bin/linux_x64/clang-format';
+		case 'darwin':
+			return '../node_modules/clang-format/bin/darwin_x64/clang-format';
+	}
+
+	return './';
+}
+
 export class ClangDocumentFormattingEditProvider
 	implements
 		vscode.DocumentFormattingEditProvider,
 		vscode.DocumentRangeFormattingEditProvider {
 	private defaults = {
-		executable: 'clang-format',
+		executable: getClangBinaryPath(),
 		style: 'file',
 		fallbackStyle: 'LLVM',
 		assumeFilename: '',

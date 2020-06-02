@@ -3,6 +3,13 @@
 Changes for each minor version will be documented here.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## **[0.2.5]** - 2020-06-01
+
+### Added
+
+-   Internal support for a prepackaged clang binary (this is coming soon)
+-   Cleaned up the codebase slightly for future modifications.
+
 ## **[0.2.4]** - 2020-05-08
 
 ### Changed
