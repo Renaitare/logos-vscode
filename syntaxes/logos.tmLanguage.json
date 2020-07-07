@@ -1,9 +1,9 @@
 {
-	"fileTypes": ["xm", "x", "xi", "xmi"],
+	"fileTypes": ["x", "xm", "xi", "xmi"],
 	"name": "Logos",
 	"patterns": [
 		{
-			"match": "%(init|hook|subclass|group|class|new|ctor|dtor|end|config|orig|log)",
+			"match": "%(init|hook|hookf|subclass|group|class|new|ctor|dtor|end|config|orig|log)",
 			"name": "keyword.source.logos"
 		},
 		{
