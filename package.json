@@ -2,7 +2,7 @@
 	"name": "logos-vscode",
 	"displayName": "Logos",
 	"description": "Logos Syntax and Formatting support for VS Code",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"publisher": "Renaitare",
 	"icon": "assets/logos-vscode.png",
 	"author": {
@@ -92,7 +92,7 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"package": "vsce package"
+		"publish": "vsce publish"
 	},
 	"dependencies": {
 		"clang-format": "^1.4.0",

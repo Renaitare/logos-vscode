@@ -3,6 +3,13 @@
 Changes for each minor version will be documented here.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## **[0.2.6]** - 2020-07-07
+
+### Changed
+
+-   Added `hookf` syntax support because it was apparently forgotten
+-   Begin planning a language server (check the project boards)
+
 ## **[0.2.5]** - 2020-06-01
 
 ### Added
